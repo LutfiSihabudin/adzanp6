@@ -20,6 +20,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gauravk.audiovisualizer.base.BaseVisualizer;
+import com.gauravk.audiovisualizer.visualizer.BarVisualizer;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.android.gms.ads.AdRequest;
@@ -47,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private Runnable runnable;
     private AdzanModel currentAdzan;
     private AdView adView;
-    private BlastVisualizer blastVisualizer;
+   private BarVisualizer barVisualizer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
         textLatin = findViewById(R.id.textLatin);
         textIndo = findViewById(R.id.textIndo);
         btnPlayPause = findViewById(R.id.btnPlayPause);
-        blastVisualizer = findViewById(R.id.blast);
+        barVisualizer = findViewById(R.id.blast);
+
 
         // Minta permission RECORD_AUDIO saat runtime jika belum diberikan
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
@@ -150,10 +153,10 @@ public class MainActivity extends AppCompatActivity {
                 int sessionId = mediaPlayer.getAudioSessionId();
                 Log.d("MainActivity", "Audio Session ID: " + sessionId);
 
-                if (sessionId > 0 && blastVisualizer != null) {
+                if (sessionId > 0 && barVisualizer != null) {
                     try {
-                        blastVisualizer.release();
-                        blastVisualizer.setAudioSessionId(sessionId);
+                        barVisualizer.release();
+                        barVisualizer.setAudioSessionId(sessionId);
                     } catch (Exception e) {
                         Log.e("MainActivity", "Failed to init visualizer: " + e.getMessage());
                     }
@@ -167,8 +170,8 @@ public class MainActivity extends AppCompatActivity {
                 isPlaying = false;
                 stopUpdatingText();
 
-                if (blastVisualizer != null) {
-                    blastVisualizer.release();
+                if (barVisualizer != null) {
+                    barVisualizer.release();
                 }
             });
 
@@ -251,8 +254,8 @@ public class MainActivity extends AppCompatActivity {
             mediaPlayer = null;
         }
         stopUpdatingText();
-        if (blastVisualizer != null) {
-            blastVisualizer.release();
+        if (barVisualizer != null) {
+            barVisualizer.release();
         }
         super.onDestroy();
     }
